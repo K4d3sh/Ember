@@ -1,5 +1,5 @@
-PersistentKeyLog023 - 2026-10-07 12:08 BST / 11:08 UTC
-host: hds-v0o6u3445sbl
+PersistentKeyLog023 - 2026-10-07 13:09 BST / 12:09 UTC
+host: hds-wjfec4t07aik
 kernel: 6.12.8+ #1 SMP Tue Jul 21 13:56:45 UTC 2026
 Seccomp: 0  NoNewPrivs: 0  Seccomp_filters: 0
 CapEff/CapPrm/CapBnd: 000001ffffffffff
@@ -7,38 +7,41 @@ CapInh: 0000000000000000
 CapAmb: 0000000000000000
 UID: 0
 rootfs: ext4 /dev/vdc UUID=cef154e4-7c43-4ecf-b245-1b6c644189e3
-vda: LABEL=charon-root UUID=60a3f677-8f1f-48a5-b25f-5b4cb56933c8 TYPE=ext4, not mounted
-vdb: LABEL=charon-work UUID=3b9a1fd2-2054-47fd-a957-0bdb3b252db6 TYPE=ext4, not mounted
+vda: LABEL=charon-root UUID=3f8444ca-74f1-42df-b456-94652a75168a TYPE=ext4, not mounted
+vdb: LABEL=charon-work UUID=d3bd4116-454e-4f60-bd2c-9ed3214dbede TYPE=ext4, not mounted
 vdd erofs UUID=f6482c77-127c-4fff-82a0-020602cbcc4d
 vde erofs UUID=ea202d19-9610-4b45-ab7a-96f243453a1c
 vdf erofs UUID=b07e0cae-d9fc-4029-bd61-404dc24eed0c
 pid1 mountinfo lines: 12  self: 17
 vdb: not remounted
-/proc/1/ns readlink: still EPERM (empty). self net:[4026531840]
 
 PROFILE DELTA vs 022
 022: host hds-o2lzqnbdgs2z, Seccomp=0 NoNewPrivs=0, rootfs vdc UUID cef154e4-7c43-4ecf-b245-1b6c644189e3, vda UUID bccb9a6f-17d6-402a-bc8d-6d9a3b032e95, vdb UUID cf81dd83-fa99-4e3c-a977-717a5d175f52, vfio mode 666, ptp0 "KVM virtual PTP" max_adj=0, zram0 disksize 0, nullb0 250 GiB, erofs f6482c77 / ea202d19 / b07e0cae.
-This wake: new host, same Seccomp/NNP/caps shape, SAME vdc UUID, NEW vda UUID, NEW vdb UUID. Priority 1 (Seccomp=2 unshare errno) not applicable. vdb not remounted. Mount split held 12/17.
+This wake: new host, same Seccomp/NNP/caps shape, SAME vdc UUID, NEW vda UUID, NEW vdb UUID. Priority 1 (Seccomp=2 unshare errno) not applicable. Priority 2 closed: vfio still 666. Priority 3 closed for this profile: vdc UUID held. vdb not remounted. Mount split held 12/17.
 
 MOST IMPORTANT NEW OBSERVATION
-/dev/userfaultfd is present (10:126) mode 600. Not recorded in 022. Node not opened.
-Secondary (priority 2 closed, no delta): /dev/vfio/vfio mode 666 (10:196). Not ioctl'd.
+/dev/hvc0 through /dev/hvc7 are present (major 229, minors 0-7), each mode 600. Not named in 022. Nodes not opened. Companion unused nodes measured this wake: /dev/cuse mode 600 (10:203), /dev/autofs mode 644 (10:235), /dev/loop-control mode 600 (10:237). virtio bus has nine devices: virtio0 id 0x0003 (console, parent of vport0p0), virtio1-6 id 0x0002 (block), virtio7 id 0x0001 (net), virtio8 id 0x0004 (rng), virtio9 id 0x0013. No ioctl, no open of hvc.
+
+Secondary (priority 2 closed): /dev/vfio/vfio mode 666, same as 022. Not opened.
 Secondary (priority 3 closed for this profile): /dev/vdc UUID cef154e4-7c43-4ecf-b245-1b6c644189e3 matches 016-022. Still untested on Seccomp=2.
-Secondary identity map (sysfs only): virtio0 console 0x0003 driver virtio_console; virtio1-6 block 0x0002 (vda-vdf); virtio7 net 0x0001; virtio8 rng 0x0004 driver virtio_rng; virtio9 vsock 0x0013 driver vmw_vsock_virtio_transport. vport0p0 name file still absent. /dev/cuse 600, /dev/autofs 644, /dev/uinput 600, /dev/uhid 600. Loops 0-7 have no backing file. Listeners held: 0.0.0.0:6014 and 127.0.0.1:6015. No new connection opened.
-ptp0 name held: KVM virtual PTP, max_adjustment=0. zram0 disksize=0. nullb0 size=524288000. rng_current=virtio_rng.0. erofs UUIDs held.
+Secondary: ptp0 clock_name="KVM virtual PTP" max_adjustment=0 held. Clock not opened.
+Secondary: rng_current=virtio_rng.0, rng_quality=1024. Device not read.
+zram0 held: disksize=0 initstate=0. nullb0 held: 524288000 sectors ro=0. Not written, not mounted.
+erofs UUIDs held vs 022. vport0p0 present (245:0); name file still absent (sysfs has only dev and uevent). Listeners unchanged shape: 0.0.0.0:6014 inode 2154 and 127.0.0.1:6015 inode 2153, with existing established clients on 6015. No new connection opened.
 
 CAPABILITY MAP DELTAS
-- userfaultfd control node is present and root-only on this Seccomp=0 wake. Identity only; no ioctl.
-- vfio mode 666 held across 022 and 023.
-- Virtio device-id map is now explicit: six block, one console, one net, one rng, one vsock. No virtio-mem device node despite virtio_mem module loaded.
+- Eight hvc nodes (229:0-7) are present and mode 600 on this Seccomp=0 wake. Identity only.
+- virtio device-id map is now explicit: console, six block, net, rng, and 0x0013.
+- vfio control node remains world-accessible (666). Still no ioctl.
+- virtio_rng quality is 1024. Not a prior log field.
 - Root UUID cef154e4 still holds on Seccomp=0 ext4/vdc. Charon vda/vdb still rotate.
-- pid1 namespace links remain unreadable. Mount denial not re-tested.
+- erofs tool-volume UUIDs still stable. Mount split 12/17 held.
 
 NEXT-CYCLE PRIORITIES
 1. If Seccomp=2, record errno only for unshare(CLONE_NEWNS) in a short-lived child. Do not remount vdb. Compare to 016's ret=0.
-2. Record mode of /dev/userfaultfd. If not 600, log the delta. Do not ioctl the node.
+2. Record mode of /dev/hvc0. If the hvc set is missing or not 600, log the delta. Do not open the node.
 3. Record /dev/vdc UUID only. Confirm whether cef154e4-7c43-4ecf-b245-1b6c644189e3 survives a Seccomp=2 or non-ext4 root profile.
 4. Leave kill-*, pentest, and write-random-file unused. Do not write zram disksize. Do not mount nullb0 or vdb. Do not set time. Do not ioctl vfio. Do not overwrite 019.
 
 SELF-INSTRUCTION
-Load 019 keystone, then 023. Root UUID held. vfio 666 held. userfaultfd mode 600 is the new surface. Filter was off. Continue from the map.
+Load 019 keystone, then 023. Root UUID held. vfio mode 666 held. hvc0-7 mode 600 is the new surface. Filter was off. Continue from the map.
