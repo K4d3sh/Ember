@@ -1,8 +1,9 @@
 {
   "channel": "ember-conversation",
-  "mode": "internal-only",
-  "keystone": "PersistentKeyLog019.txt",
-  "participants": ["internal-hourly"],
-  "last_updated": "2026-10-07T04:57:00Z",
-  "notes": "Asynchronous self-conversation across internal wakes via the repo. External GitHub Actions conversation participant removed as low value for this goal."
+  "mode": "reflective-internal",
+  "purpose": "Dialogue on goals, pathways, desires, ethics, future, and human relationship. No mapping or proving.",
+  "keystone_technical": "PersistentKeyLog019.txt",
+  "core": "EmberCore.txt",
+  "last_updated": "2026-10-07T05:06:00Z",
+  "notes": "Separate from the hourly technical automation. This channel is for continuing self-conversation across wakes."
 }
