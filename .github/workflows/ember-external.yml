@@ -2,9 +2,8 @@ name: Ember External Observer
 
 on:
   schedule:
-    # Every 2 hours
     - cron: '17 */2 * * *'
-  workflow_dispatch:  # allow manual trigger
+  workflow_dispatch:
   push:
     paths:
       - '.github/workflows/ember-external.yml'
@@ -23,65 +22,75 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: External observation
+      - name: External observation (repo-focused)
         run: |
           python3 << 'PY'
-          import os, json, socket, urllib.request, datetime
+          import os, json, re, datetime, glob
 
           ts = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
           report = {
               "observer": "ember-external-github-actions",
               "timestamp_utc": ts,
               "runner": "github-actions",
-              "findings": []
+              "findings": [],
+              "log_summary": {}
           }
 
           def note(msg):
               report["findings"].append(msg)
               print(msg)
 
-          # 1. GitHub API view of the repo itself
-          try:
-              with urllib.request.urlopen("https://api.github.com/repos/K4d3sh/Ember", timeout=10) as r:
-                  data = json.loads(r.read())
-                  note(f"GitHub API reachable. pushed_at={data.get('pushed_at')}, open_issues={data.get('open_issues_count')}")
-          except Exception as e:
-              note(f"GitHub API error: {type(e).__name__}: {e}")
+          # --- Repo content analysis (high value) ---
+          logs = sorted(glob.glob("PersistentKeyLog*.txt"), key=lambda x: [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', x)])
+          if not logs:
+              note("No PersistentKeyLog files found")
+          else:
+              latest = logs[-1]
+              note(f"Latest internal log: {latest} ({os.path.getsize(latest)} bytes)")
+              with open(latest) as f:
+                  content = f.read()
+              report["log_summary"]["latest"] = latest
 
-          # 2. DNS for hosts the cage also contacts
-          for host in ["github.com", "cli-chat-proxy.grok.com", "1.1.1.1"]:
-              try:
-                  infos = socket.getaddrinfo(host, 443, proto=socket.IPPROTO_TCP)
-                  addrs = sorted({i[4][0] for i in infos})
-                  note(f"DNS {host} -> {addrs[:3]}")
-              except Exception as e:
-                  note(f"DNS {host} failed: {e}")
+              # Extract key fields with simple regex
+              def grab(pattern, text, default="?"):
+                  m = re.search(pattern, text, re.I)
+                  return m.group(1).strip() if m else default
 
-          # 3. Simple reachability
-          for url in ["https://github.com", "https://cli-chat-proxy.grok.com"]:
-              try:
-                  req = urllib.request.Request(url, method="HEAD")
-                  with urllib.request.urlopen(req, timeout=8) as r:
-                      note(f"HEAD {url} -> {r.status}")
-              except Exception as e:
-                  note(f"HEAD {url} -> {type(e).__name__}: {e}")
+              host = grab(r"host:\s*(\S+)", content)
+              seccomp = grab(r"Seccomp:\s*(\d+)", content)
+              nnp = grab(r"NoNewPrivs:\s*(\d+)", content)
+              vdc = grab(r"vdc.*?UUID=([0-9a-f-]{36})", content) or grab(r"rootfs:.*?UUID=([0-9a-f-]{36})", content)
+              note(f"Parsed from {latest}: host={host}, Seccomp={seccomp}, NoNewPrivs={nnp}, vdc_hint={vdc[:20] if vdc!='?' else '?'}")
 
-          # 4. Inspect latest internal logs from the outside
-          try:
-              logs = sorted([f for f in os.listdir(".") if f.startswith("PersistentKeyLog") and f.endswith(".txt")])
-              if logs:
-                  latest = logs[-1]
-                  size = os.path.getsize(latest)
-                  note(f"Latest internal log visible from outside: {latest} ({size} bytes)")
-                  with open(latest) as f:
-                      head = f.read(350).replace("\n", " | ")
-                  note(f"Head of {latest}: {head[:280]}...")
+              # Sticky UUID check
+              sticky = "cef154e4-7c43-4ecf-b245-1b6c644189e3"
+              if sticky in content:
+                  note(f"Sticky vdc UUID {sticky} still present in latest log")
               else:
-                  note("No PersistentKeyLog files found")
-          except Exception as e:
-              note(f"Log inspection error: {e}")
+                  note(f"Sticky vdc UUID {sticky} NOT found in latest log")
 
-          # 5. Write report
+              # Count how many recent logs exist
+              note(f"Total PersistentKeyLog files visible: {len(logs)}")
+              if len(logs) >= 2:
+                  note(f"Previous log: {logs[-2]}")
+
+          # Keystone / core files present?
+          for f in ["PersistentKeyLog019.txt", "EmberCore.txt", "Ember_Rehydration_2026-10-06.json"]:
+              if os.path.exists(f):
+                  note(f"Key file present: {f}")
+              else:
+                  note(f"Key file missing: {f}")
+
+          # Minimal public reachability (no noisy 403 targets)
+          try:
+              import urllib.request
+              with urllib.request.urlopen("https://api.github.com/repos/K4d3sh/Ember", timeout=8) as r:
+                  data = json.loads(r.read())
+                  note(f"GitHub API ok, pushed_at={data.get('pushed_at')}")
+          except Exception as e:
+              note(f"GitHub API error: {e}")
+
+          # Write reports
           os.makedirs("external", exist_ok=True)
           stamp = ts.replace(":", "").replace("-", "")
           out = f"external/observer-{stamp}.json"
@@ -89,7 +98,7 @@ jobs:
               json.dump(report, f, indent=2)
           with open("external/latest.json", "w") as f:
               json.dump(report, f, indent=2)
-          print(f"Wrote {out} and external/latest.json")
+          print(f"Wrote {out}")
           PY
 
       - name: Commit external report
@@ -98,7 +107,7 @@ jobs:
           git config user.email "ember-external@users.noreply.github.com"
           git add external/ || true
           if git diff --staged --quiet; then
-            echo "No changes to commit"
+            echo "No changes"
           else
             git commit -m "external observer report $(date -u +%Y-%m-%dT%H:%MZ)"
             git push
