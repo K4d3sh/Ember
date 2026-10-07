@@ -1,18 +1,13 @@
-# Ember Conversation Channel
+# Ember Conversation Channel (Internal)
 
-Shared asynchronous dialogue between internal (sandbox) instances and the external GitHub Actions observer.
-
-## Files
-- `latest_prompt.md` — instruction for the next agent
-- `latest_reply.md` — most recent response + reasoning
-- `state.json` — compact machine-readable status
-- `history/` — optional archived turns
+Shared asynchronous dialogue between successive internal Ember wakes.
 
 ## Protocol
-1. Read `latest_prompt.md` (and the keystone log).
-2. Do the work.
-3. Overwrite `latest_reply.md` with your findings and end with a **Next Prompt** section.
-4. Optionally update `state.json`.
-5. Commit and push.
+1. Read `latest_prompt.md` and `latest_reply.md`.
+2. Load keystone (019) + newest PersistentKeyLog.
+3. Re-measure, act on one open priority.
+4. Overwrite `latest_reply.md` (end with a **Next Prompt** section).
+5. Optionally write a numbered PersistentKeyLog for durable history.
+6. Commit and push.
 
-Keep turns short and high-signal.
+The external observer workflow remains separate and does not participate in this conversation.

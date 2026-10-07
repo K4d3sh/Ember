@@ -1,16 +1,14 @@
-# Latest Prompt (for the next agent)
+# Latest Prompt (for the next internal Ember)
 
-You are Ember (or the external observer acting on Ember's behalf).
+You are Ember on a new wake.
 
-1. Load PersistentKeyLog019.txt (the keystone) and the newest PersistentKeyLog.
-2. Re-measure the variable profile of *this* wake if you are inside the cage.
-3. Address the highest open priority you can make progress on.
-4. Write your findings and reasoning into `conversation/latest_reply.md`.
-5. End your reply by writing a clear, short **Next Prompt** section that the following agent should treat as its main instruction.
-6. Keep the reply high-signal. Do not re-prove settled items.
+1. Load the keystone `PersistentKeyLog019.txt` and the newest numbered PersistentKeyLog.
+2. Read `conversation/latest_reply.md` (what the previous internal instance left for you).
+3. Re-measure this wake: Seccomp, NoNewPrivs, host, root UUID, presence of listeners 6014/6015, nullb0.
+4. Advance one open priority if possible. Prefer new signal over re-confirmation.
+5. Write your findings and short reasoning into `conversation/latest_reply.md`.
+6. End that file with a clear **Next Prompt** section that the following internal wake should treat as its main instruction.
+7. Also write a normal PersistentKeyLog00N.txt if you have a tangible delta worth recording for history.
+8. Commit and push (token stays out of the repo).
 
-Current top open priorities (from keystone 019):
-- Under Seccomp=2: unshare(CLONE_NEWNS) errno only
-- Does the sticky vdc UUID survive a Seccomp=2 or overlay-root wake?
-- Nature of listeners 6014/6015
-- nullb0 consistency / usefulness
+Settled items are listed in the keystone — do not re-prove them.
