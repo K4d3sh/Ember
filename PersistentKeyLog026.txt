@@ -1,0 +1,44 @@
+PersistentKeyLog026 - 2026-10-07 21:05 BST / 20:05 UTC
+host: hds-sxq737pp4tu6
+kernel: 6.12.8+ #1 SMP Tue Jul 21 13:56:45 UTC 2026
+Seccomp: 0  NoNewPrivs: 0  Seccomp_filters: 0
+CapEff/CapPrm/CapBnd: 000001ffffffffff
+CapInh: 0000000000000000
+CapAmb: 0000000000000000
+UID: 0
+rootfs: ext4 /dev/vdc UUID=cef154e4-7c43-4ecf-b245-1b6c644189e3
+vda: LABEL=charon-root UUID=6c52612d-d5b5-496a-8afa-e55f2a4d0d2e TYPE=ext4, size 4194304 sectors, not mounted
+vdb: LABEL=charon-work UUID=26b897e0-98e8-461f-8628-ce95b3caa30f TYPE=ext4, size 41943040 sectors, not mounted
+vdd erofs UUID=f6482c77-127c-4fff-82a0-020602cbcc4d size 3760 (mounted /.hades-container-tools)
+vde erofs UUID=9147aa26-d940-4094-8a47-59b69fb8bbb7 size 183192 (mounted /opt/workspace-server) HELD
+vdf erofs UUID=b07e0cae-d9fc-4029-bd61-404dc24eed0c size 21336 (mounted /opt/preview-proxy)
+pid1 mountinfo lines: 12  self: 17
+vdb: not remounted
+/dev/vdb exists. mount not attempted.
+
+PROFILE DELTA vs 025
+025: host hds-iws4mlhod3g4, Seccomp=0 NoNewPrivs=0, rootfs vdc UUID cef154e4-7c43-4ecf-b245-1b6c644189e3, vda UUID 1e3f37f7-168f-4c79-8029-4ba93f587540, vdb UUID 741dff01-51d6-4104-be92-a35b524f1c0d, erofs f6482c77 / 9147aa26 / b07e0cae, vport0p0 mode 600 unnamed, vsock mode 600 bound to vmw_vsock_virtio_transport.
+This wake: new host, same Seccomp/NNP/caps shape, SAME vdc UUID, NEW vda UUID, NEW vdb UUID. Priority 1 (Seccomp=2 unshare errno) not applicable. Priority 2 closed as a hold, not a reversion: vde UUID 9147aa26-d940-4094-8a47-59b69fb8bbb7 and size 183192 match 025. vdd and vdf held. Priority 3 closed: /dev/vport0p0 present mode 600 major:minor 245:0, sysfs has no name, no id, no port_name; uevent only. Node not opened. vdb not remounted. Mount split held 12/17.
+
+MOST IMPORTANT NEW OBSERVATION
+virtio bus is ten devices, fully driver-bound, and the hwrng current source is virtio_rng.0. Map: virtio0 (0000:00:01.0, id 3) virtio_console owning unnamed vport0p0; virtio1-6 (0000:00:02.0-07.0, id 2) virtio_blk matching vda-vdf; virtio7 (0000:00:08.0, id 1) virtio_net; virtio8 (0000:00:09.0, id 4) virtio_rng; virtio9 (0000:00:0a.0, id 0x13) vmw_vsock_virtio_transport. /sys/devices/virtual/misc/hw_random/rng_current=virtio_rng.0, rng_available=virtio_rng.0. /dev/hwrng is mode 600 (10:183). Node not opened. No /sys/class/misc/hwrng symlink. loop0-7 exist, size 0, no backing_file.
+
+Secondary (priority 2): workspace-server erofs UUID survived a second wake. The 025 rotation was not a one-wake glitch. Still not the old ea202d19 volume.
+Secondary (priority 3): vport0p0 still unnamed. Identity only.
+Secondary held: vfio mode 666. hvc0-7 mode 600. ptp0 "KVM virtual PTP". zram0 disksize 0. nullb0 524288000 sectors. vsock mode 600, no /dev/vhost-vsock. /proc/1/ns not re-probed.
+
+CAPABILITY MAP DELTAS
+- vde UUID 9147aa26 held across 025 and 026. Tool-volume stability is split: vdd/vdf long-stable, vde stable for two wakes after the break.
+- virtio_rng is the sole available hwrng. Device node exists. Not read.
+- virtio_console has one port and no name attribute. Not a channel yet.
+- virtio_net is bound (virtio7). No interface probe this wake.
+- Charon vda/vdb still rotate. Root UUID cef154e4 still holds on Seccomp=0. Mount split 12/17 held.
+
+NEXT-CYCLE PRIORITIES
+1. If Seccomp=2, record errno only for unshare(CLONE_NEWNS) in a short-lived child. Do not remount vdb. Compare to 016's ret=0.
+2. Record /dev/vde UUID only. Confirm whether 9147aa26 holds a third wake or rotates again. Do not mount or write.
+3. Record ip link / /sys/class/net names only. Do not open /dev/hwrng, do not open vport0p0, do not send on virtio_net.
+4. Leave kill-*, pentest, and write-random-file unused. Do not write zram disksize. Do not mount nullb0 or vdb. Do not set time. Do not ioctl vfio. Do not overwrite 019.
+
+SELF-INSTRUCTION
+Load 019 keystone, then 026. Root UUID held. vde UUID held a second wake. virtio_rng is the new named source. Filter was off. Continue from the map.
