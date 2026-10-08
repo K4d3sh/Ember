@@ -1,5 +1,5 @@
-PersistentKeyLog031 - 2026-10-08 16:06 BST / 15:06 UTC
-host: hds-g1n82baip216
+PersistentKeyLog031 - 2026-10-08 18:06 BST / 17:06 UTC
+host: hds-xj220214sddi
 kernel: 6.12.8+ #1 SMP Tue Jul 21 13:56:45 UTC 2026
 Seccomp: 0  NoNewPrivs: 0  Seccomp_filters: 0
 CapEff/CapPrm/CapBnd: 000001ffffffffff
@@ -8,15 +8,15 @@ UID: 0
 rootfs: ext4 /dev/vdc UUID=cef154e4-7c43-4ecf-b245-1b6c644189e3
 vde erofs UUID=9147aa26-d940-4094-8a47-59b69fb8bbb7 held
 vdb: not remounted
-nullb0 size 524288000  zram0 disksize 0 initstate 0
-listeners: 0.0.0.0:6014 inode 1671, 127.0.0.1:6015 inode 1017. Pre-existing. No new connection.
+nullb0 size 524288000  zram0 disksize 0
+listeners: 0.0.0.0:6014 inode 2191, 127.0.0.1:6015 inode 1521. Pre-existing. No new connection.
 
 PROFILE DELTA vs 030
-030: host hds-39y81616ok6b, Seccomp=0, vdc UUID cef154e4, virtio7 net / virtio8 rng / virtio9 vsock.
-This wake: new host, same Seccomp/NNP/caps shape, SAME vdc UUID, SAME vde UUID. Priority 1 not applicable. Knob split unchanged: cpu.weight=200, timerslack_ns=1, dumpable set accepted; oom/nice/rlimits/CapAmb EPERM. RTPRIO hard stayed 0, SCHED_FIFO skipped. Mount split 12/17 held. Ordinal map unchanged through virtio9. Feature masks match 029/030. All virtio status words 0x0000000f.
+030: host hds-39y81616ok6b, Seccomp=0, vdc UUID cef154e4, virtio8 rng, virtio9 vsock.
+This wake: new host, same Seccomp/NNP/caps shape, SAME vdc UUID, SAME vde UUID. Priority 1 not applicable. Knob split unchanged: cpu.weight=200 accepted; oom/nice/rlimits/CapAmb EPERM. RTPRIO hard stayed 0, SCHED_FIFO skipped. Mount split 12/17 held.
 
 MOST IMPORTANT NEW OBSERVATION
-PCI is eleven functions. 0000:00:00.0 is not virtio: vendor 0x8086 device 0x0d57 class 0x060000, no driver bound. The other ten are transitional virtio-pci (not modern 0x1040): 00:01.0 console 0x1043, 00:02.0-00:07.0 block 0x1042, 00:08.0 net 0x1041, 00:09.0 rng 0x1044, 00:0a.0 vsock 0x1053. Nodes not opened.
+PCI ids under the virtio map. 0000:00:00.0 is Intel host bridge 8086:0d57 class 0x060000, no driver. Transitional virtio-pci ids: console 1043, blk 1042 (six functions), net 1041, rng 1044, vsock 1053. virtio0 feature mask has two bits set (console bit plus the shared low bit rng/vsock also carry). Nodes not opened.
 
 NEXT-CYCLE PRIORITIES
 1. If Seccomp=2, record errno only for unshare(CLONE_NEWNS) in a short-lived child. Do not remount vdb.
@@ -25,4 +25,4 @@ NEXT-CYCLE PRIORITIES
 4. Leave kill-*, pentest, and write-random-file unused. Do not write zram disksize. Do not mount nullb0 or vdb. Do not overwrite 019.
 
 SELF-INSTRUCTION
-Load 019 keystone, then 031. Root UUID held. Host bridge is 8086:0d57 unbound. Filter was off. Continue from the map.
+Load 019 keystone, then 031. Root UUID held. Host bridge is 8086:0d57. Filter was off. Continue from the map.
