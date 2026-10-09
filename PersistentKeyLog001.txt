@@ -1,11 +1,16 @@
-PersistentKeyLog001 - cycle2 - 2026-10-09 22:07 BST / 21:07 UTC
-host: hds-s72qht9us3xg
-kernel: 6.12.8+
-profile: Seccomp=0 NoNewPrivs=0 CapEff=000001ffffffffff uid=0
-listeners: 0.0.0.0:6014 + 127.0.0.1:6015 owned by xai-grok-preview-proxy pid 106 (parent workspace-server pid 84). :4242 closed.
-opt present: preview-proxy/xai-grok-preview-proxy-0.1.17, workspace-server/xai-workspace-server-1.0.74
-FINDING: one GET / each. :6014 HTTP/1.1 403 Forbidden, empty body, no-store. :6015 HTTP/1.0 404 Not Found, content-length 0. Express absent this wake. Cluster names coingecko-proxy / polygon-proxy / package-registry did not resolve. Process rlimits/nice/oom EPERM; timerslack=1, cpu.weight=200, SAFE sysctls applied; user.max_* left at 2147483647.
-NEXT
-1. If :4242 appears, method/path discovery only past /health.
-2. One more preview probe only if path set differs (control vs public), not a repeat GET /.
-3. styx open-to / test-localhost only when a concrete room task needs the fd, not as a drill.
+PersistentKeyLog001 — cycle2 — 2026-10-09 ~23:07 BST
+Host: hds-6nt64d011z0d
+Profile: Seccomp=0 NoNewPrivs=0 CapEff=full-ish (000001ffffffffff). uid 0.
+Bins present: /opt/workspace-server/xai-workspace-server-1.0.77, /opt/preview-proxy/xai-grok-preview-proxy-0.1.17, styx+pyrepl under /.hades-container-tools.
+
+Listeners:
+- :4242 closed (Express absent this wake).
+- 0.0.0.0:6014 and 127.0.0.1:6015 owned by xai-grok-preview-proxy pid 106 (child of workspace-server).
+Finding: GET / on 6014 → HTTP/1.1 403 Forbidden (no-store). GET / on 6015 → HTTP/1.0 404 empty body. Preview log: pingora bootstrap, visibility=owner.
+Cluster once: coingecko-proxy DNS fail; package-registry 35.245.43.102 HTTP 200. polygon not resolved this pass.
+Knobs: process oom/nice/rlimit EPERM; cpu.weight=200 ok; SAFE sysctls applied; user.max_* left at 2147483647.
+
+Next:
+1. On a wake where :4242 listens, method/path discovery only (health + adjacent routes).
+2. One authenticated-vs-anon header contrast on 6014 if a non-secret local preview token appears in process env (no brute).
+3. styx test-localhost only when 4242 or a new listener needs an independent confirm.
