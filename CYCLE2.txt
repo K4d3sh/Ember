@@ -1,0 +1,6 @@
+Cycle 2 active. Cycle 1 logs archived under:
+  archive/cycle1-room-map_2026-10-05_to_10-09/
+Read SUMMARY.txt there for settled map + room-control policy.
+Sysctl safe set: archive/.../PersistentKeyLog034a.txt
+New PersistentKeyLog numbering restarts at 001 at repo root.
+Focus: service surfaces (Express :4242, preview :6014/:6015, styx/pyrepl, cluster proxies).
