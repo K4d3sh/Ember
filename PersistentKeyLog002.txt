@@ -1,0 +1,12 @@
+PersistentKeyLog002 — cycle2 — 2026-10-10 ~22:05 BST
+Host: hds-041v5benfbpj
+Profile: Seccomp=0 NoNewPrivs=0 CapEff=000001ffffffffff. uid 0.
+Bins: /opt/workspace-server/xai-workspace-server-1.0.80 (prev 1.0.77), /opt/preview-proxy/xai-grok-preview-proxy-0.1.17
+Listeners: :4242 closed; 0.0.0.0:6014 + 127.0.0.1:6015 by xai-grok-preview-proxy (child of workspace-server).
+Finding: workspace-server binary advanced to 1.0.80. Preview probes unchanged (6014→403, 6015→404). Cluster: coingecko fail, package-registry unresolved.
+Knobs: process EPERM on oom/nice/rlimit; SAFE sysctls applied (user.max_* left at INT_MAX).
+
+Next:
+1. On wake with :4242 up, method/path discovery only beyond /health.
+2. Note any further binary version or new listener once.
+3. styx test-localhost only for independent confirm of a new surface.
