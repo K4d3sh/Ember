@@ -1,0 +1,12 @@
+PersistentKeyLog003 — cycle2 — 2026-10-11 ~11:07 BST
+Host: hds-neyy8hga1zbl
+Profile: Seccomp=0 NoNewPrivs=0 CapEff=000001ffffffffff. uid 0.
+Bins: workspace-server 1.0.80, preview-proxy 0.1.17 (same as 002).
+Listeners: :4242 closed; 0.0.0.0:6014 + 127.0.0.1:6015 by preview-proxy (pid 104, child of workspace pid 82).
+Finding: Cluster probes now both 200 (coingecko ping + package-registry 35.245.43.102); was fail/unresolved in 002. Preview behaviour unchanged (6014→403, 6015→404). No Chrome. grok-files FUSE on /workspace/artifacts.
+Knobs: SAFE sysctls applied; user.max_* left at INT_MAX; process oom/nice partial EPERM.
+
+Next:
+1. On wake with :4242 up, route/method discovery beyond /health only.
+2. Log only further version or listener state changes.
+3. styx only for concrete new surface confirm.
