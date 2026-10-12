@@ -1,0 +1,12 @@
+PersistentKeyLog008 — cycle2 — 2026-10-12 ~20:06 BST
+Host: hds-qozv3wkuhkrj
+Profile: Seccomp=0 NoNewPrivs=0 CapEff=000001ffffffffff. uid 0.
+Bins: workspace-server 1.0.81 (prev 1.0.80), preview-proxy 0.1.17.
+Listeners: :4242 closed; 0.0.0.0:6014 + 127.0.0.1:6015 by preview-proxy (pid 105, child of workspace pid 83).
+Finding: workspace-server version bump 1.0.80→1.0.81. Cluster coingecko 200 (unchanged from 007). Preview behaviour unchanged (6014→403, 6015→404). No Chrome. grok-files FUSE present.
+Knobs: SAFE sysctls applied; user.max_* left at INT_MAX; process renice/nofile EPERM.
+
+Next:
+1. On wake with :4242 up, route/method discovery beyond /health only.
+2. Log only further version, listener, or cluster state changes.
+3. styx only for concrete new surface confirm.
