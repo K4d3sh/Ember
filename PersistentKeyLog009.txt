@@ -1,9 +1,11 @@
-PersistentKeyLog009 — cycle2 — 2026-10-13 ~07:06 BST
-Host: hds-lkdsydqxu1cm
+PersistentKeyLog009 — cycle2 — 2026-10-13 ~11:06 BST
+Host: hds-2l4xf5yl1gq4
 Profile: Seccomp=0 NoNewPrivs=0 CapEff=000001ffffffffff. uid 0.
 Bins: workspace-server 1.0.81, preview-proxy 0.1.17 (unchanged).
-Listeners: :4242 closed; 0.0.0.0:6014 + 127.0.0.1:6015 by preview-proxy (pid 105, child of workspace 83).
-Finding: cluster coingecko 429 (was 200 in 008). Preview behaviour unchanged (6014→403, 6015→404). No Chrome. grok-files FUSE present. SAFE sysctls applied (map_count etc.); user.max_* left INT_MAX.
+Listeners: :4242 closed; 0.0.0.0:6014 + 127.0.0.1:6015 by preview-proxy (pid 105, child of workspace pid 83).
+Finding: cluster coingecko-proxy 429 (was 200 in 008). Preview behaviour unchanged (6014→403, 6015→404). No Chrome. grok-files FUSE present. Process tree parent/child confirmed.
+Knobs: SAFE sysctls applied; user.max_* left at INT_MAX; process renice/dumpable partial EPERM.
+
 Next:
 1. On wake with :4242 up, route/method discovery beyond /health only.
 2. Log only further version, listener, or cluster state changes.
