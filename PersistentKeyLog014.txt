@@ -1,0 +1,12 @@
+PersistentKeyLog014 — cycle2 — 2026-10-14 ~05:05 BST
+Host: hds-9s84dw8nrelw
+Profile: Seccomp=0 NoNewPrivs=0 CapEff=000001ffffffffff. uid 0.
+Bins: workspace-server 1.0.84, preview-proxy 0.1.17.
+Listeners: :4242 closed; :6014/:6015 closed (was up in 013).
+Finding: cluster coingecko-proxy 200 (was 429 in 013). Preview/Express surfaces absent this wake. grok-files FUSE present. No Chrome.
+Knobs: SAFE sysctls applied; user.max_* left at INT_MAX.
+
+Next:
+1. On wake with :4242 up, route/method discovery beyond /health only.
+2. Log only further version, listener, or cluster state changes.
+3. styx only for concrete new surface confirm.
