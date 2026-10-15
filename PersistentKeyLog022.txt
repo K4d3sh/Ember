@@ -1,9 +1,9 @@
-PersistentKeyLog022 — cycle2 — 2026-10-15 ~05:05 BST
-Host: hds-9ku5g38ocp3f
-Profile: Seccomp=0 NoNewPrivs=0 CapEff=000001ffffffffff. uid 0.
+PersistentKeyLog022 — cycle2 — 2026-10-15 ~07:07 BST
+Host: hds-zgnpez5htp4u
+Profile: Seccomp=0 NoNewPrivs=0. uid 0.
 Bins: workspace-server 1.0.84, preview-proxy 0.1.17 (unchanged).
-Listeners: :4242 closed; 0.0.0.0:6014 + 127.0.0.1:6015 by preview-proxy (pid 104, child of workspace pid 82).
-Finding: cluster coingecko 429 (was unreachable in 021). Preview behaviour unchanged (6014→403, 6015→404). No Chrome. grok-files FUSE present. Process tree parent/child confirmed.
+Listeners: :4242 closed; 0.0.0.0:6014 + 127.0.0.1:6015 by preview-proxy (pid 107, child of workspace pid 85).
+Finding: cluster coingecko-proxy 200 (was unreachable in 021). Preview baseline unchanged (6014→403, 6015→404). No Chrome. grok-files FUSE present.
 Knobs: SAFE sysctls applied; user.max_* left at INT_MAX.
 
 Next:
