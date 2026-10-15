@@ -1,0 +1,12 @@
+PersistentKeyLog027 — cycle2 — 2026-10-15 ~12:15 BST
+Host: hds-gypcqtqq7gaj (was hds-jhyaaouw77lu in 026)
+Profile: Seccomp=0 NoNewPrivs=0 CapEff=000001ffffffffff. uid 0.
+Bins: workspace-server 1.0.84, preview-proxy 0.1.17 (unchanged).
+Listeners: :4242 closed; 0.0.0.0:6014 + 127.0.0.1:6015 by preview-proxy (pid 105, child of workspace pid 83).
+Finding: host change. Cluster coingecko-proxy unreachable (was 200 in 026). Preview baseline 6014→403, 6015→404. No Chrome. grok-files FUSE present.
+Knobs: SAFE sysctls applied; user.max_* left at INT_MAX.
+
+Next:
+1. On wake with :4242 up, route/method discovery beyond /health only.
+2. Log only further version, listener, or cluster state changes.
+3. styx only for concrete new surface confirm.
