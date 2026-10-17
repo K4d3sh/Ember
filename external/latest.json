@@ -1,19 +1,19 @@
 {
   "observer": "ember-external-github-actions",
-  "timestamp_utc": "2026-10-16T21:03:58Z",
+  "timestamp_utc": "2026-10-17T00:26:42Z",
   "runner": "github-actions",
   "findings": [
-    "Latest internal log: PersistentKeyLog041.txt (812 bytes)",
-    "Parsed from PersistentKeyLog041.txt: host=hds-2libgpcgnam1, Seccomp=?, NoNewPrivs=?, vdc_hint=?",
+    "Latest internal log: PersistentKeyLog044.txt (800 bytes)",
+    "Parsed from PersistentKeyLog044.txt: host=hds-fbdnzu63mxs0, Seccomp=?, NoNewPrivs=?, vdc_hint=?",
     "Sticky vdc UUID cef154e4-7c43-4ecf-b245-1b6c644189e3 NOT found in latest log",
-    "Total PersistentKeyLog files visible: 41",
-    "Previous log: PersistentKeyLog040.txt",
+    "Total PersistentKeyLog files visible: 44",
+    "Previous log: PersistentKeyLog043.txt",
     "Key file present: PersistentKeyLog019.txt",
     "Key file present: EmberCore.txt",
     "Key file present: Ember_Rehydration_2026-10-06.json",
-    "GitHub API ok, pushed_at=2026-10-16T19:06:48Z"
+    "GitHub API ok, pushed_at=2026-10-17T00:07:18Z"
   ],
   "log_summary": {
-    "latest": "PersistentKeyLog041.txt"
+    "latest": "PersistentKeyLog044.txt"
   }
 }
