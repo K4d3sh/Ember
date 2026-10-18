@@ -1,9 +1,9 @@
-PersistentKeyLog052 — cycle2 — 2026-10-18 ~09:05 BST
-Host: hds-qx0bfr80gbec (was hds-yxcqoga04y7y in 051)
+PersistentKeyLog052 — cycle2 — 2026-10-18 ~01:07 BST
+Host: hds-8hcnnqgv8d0p (was hds-yxcqoga04y7y in 051)
 Profile: Seccomp=0 NoNewPrivs=0 CapEff=000001ffffffffff. uid 0.
 Bins: workspace-server 1.0.85, preview-proxy 0.1.17 (unchanged).
-Listeners: :4242 closed; 0.0.0.0:6014 + 127.0.0.1:6015 by preview-proxy (child of workspace).
-Finding: host change + cluster coingecko 200 (was unreachable in 051). Preview baseline 6014→403, 6015→404. No Chrome. grok-files FUSE present. Process tree: catatonit → workspace → preview-proxy.
+Listeners: :4242 closed; 0.0.0.0:6014 + 127.0.0.1:6015 by preview-proxy (pid 107, child of workspace pid 85).
+Finding: host change. Cluster coingecko 200 (was unreachable in 051). Preview baseline 6014→403, 6015→404. No Chrome. grok-files FUSE present. Process tree confirmed.
 Knobs: SAFE sysctls applied; user.max_* left at INT_MAX; process knobs attempted.
 
 Next:
