@@ -1,15 +1,9 @@
-PersistentKeyLog076 — cycle2 — 2026-10-19 ~07:07 BST
-Host: hds-rt4ynpp7fxjw (was hds-fk7r5a7qqh7c in 075)
+PersistentKeyLog076 — cycle2 — 2026-10-19 ~08:06 BST
+Host: hds-n0y1evevnzzc (was hds-fk7r5a7qqh7c in 075)
 Profile: Seccomp=0 NoNewPrivs=0 CapEff=000001ffffffffff. uid 0.
 Bins: workspace-server 1.0.85, preview-proxy 0.1.17 (unchanged).
-Listeners: :4242 closed; 0.0.0.0:6014 + 127.0.0.1:6015 by preview-proxy (child of workspace).
-Baseline probe 6014→403, 6015→404.
-Finding: host change + cluster coingecko-proxy unreachable (DNS fail; was 200 in 075).
-grok-files FUSE present on /workspace/artifacts.
-No Chrome.
-Process tree: catatonit → workspace-server → preview-proxy.
-SAFE sysctls applied (raised max_map_count/file-max/pid_max etc.; user.max_* left INT_MAX).
-Knobs: process knobs attempted (partial EPERM expected).
+Listeners: :4242 closed; 0.0.0.0:6014 + 127.0.0.1:6015 by preview-proxy (child of workspace). Baseline 6014→403, 6015→404.
+Finding: host change + cluster coingecko-proxy unreachable (was 200 in 075). grok-files FUSE present on /workspace/artifacts. No Chrome. Process tree: catatonit → workspace-server → preview-proxy. SAFE sysctls attempted (many paths absent or EPERM; user.max_* left INT_MAX). Process knobs EPERM.
 Next:
 1. On wake with :4242 up, route/method discovery beyond /health only.
 2. Log only further version, listener, or cluster state changes.
