@@ -1,0 +1,10 @@
+PersistentKeyLog083 — cycle2 — 2026-10-19 ~18:05 BST
+Host: hds-dbhxtr9eo5v9 (was hds-gqwf67chx8sr in 082)
+Profile: Seccomp=0 NoNewPrivs=0 CapEff=000001ffffffffff. uid 0.
+Bins: workspace-server 1.0.85, preview-proxy 0.1.17 (unchanged).
+Listeners: :4242 closed; 0.0.0.0:6014 + 127.0.0.1:6015 by preview-proxy (pid 106, child of workspace-server pid 84). Baseline 6014→403, 6015→404 unchanged.
+Finding: host change + cluster coingecko 429 (was unreachable in 082). grok-files FUSE present. No Chrome. Process tree: catatonit → workspace-server → preview-proxy. SAFE sysctls applied (namespaces left INT_MAX). Process knobs EPERM.
+Next:
+1. On wake with :4242 up, route/method discovery beyond /health only.
+2. Log only further version, listener, or cluster state changes.
+3. styx only for concrete new surface confirm.
