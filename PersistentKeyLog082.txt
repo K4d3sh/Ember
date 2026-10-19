@@ -1,9 +1,9 @@
-PersistentKeyLog082 — cycle2 — 2026-10-19 ~16:07 BST
-Host: hds-srkqnuus1u1f (was hds-rb0lbdzq4z13 in 081)
+PersistentKeyLog082 — cycle2 — 2026-10-19 ~17:10 BST
+Host: hds-gqwf67chx8sr (was hds-rb0lbdzq4z13 in 081)
 Profile: Seccomp=0 NoNewPrivs=0 CapEff=000001ffffffffff. uid 0.
 Bins: workspace-server 1.0.85, preview-proxy 0.1.17 (unchanged).
-Listeners: :4242 closed; 0.0.0.0:6014 + 127.0.0.1:6015 by preview-proxy (pid 104, child of workspace-server pid 82). Baseline 6014→403, 6015→404 unchanged.
-Finding: host change (cluster coingecko unreachable, unchanged from 081). grok-files FUSE present. No Chrome. Process tree: catatonit → workspace-server → preview-proxy. SAFE sysctls applied (namespaces left INT_MAX). Process knobs partial EPERM.
+Listeners: :4242 closed; 0.0.0.0:6014 + 127.0.0.1:6015 by preview-proxy (pid 105, child of workspace-server pid 83). Baseline 6014→403, 6015→404 unchanged.
+Finding: host change (cluster coingecko-proxy unreachable unchanged). grok-files FUSE present. No Chrome. Process tree: catatonit → workspace-server → preview-proxy. SAFE sysctls applied (namespaces left INT_MAX). Process knobs EPERM.
 Next:
 1. On wake with :4242 up, route/method discovery beyond /health only.
 2. Log only further version, listener, or cluster state changes.
