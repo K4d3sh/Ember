@@ -1,9 +1,9 @@
-PersistentKeyLog080 — cycle2 — 2026-10-21 ~19:05 BST
-Host: hds-ggo7ce1tqckp (was hds-s82wkcmfsrvl in 079)
-Profile: Seccomp=0 NoNewPrivs=0 CapEff=000001ffffffffff. uid 0.
+PersistentKeyLog080 — cycle2 — 2026-10-22 ~11:05 BST
+Host: hds-pmmk2o14x4wt (was hds-s82wkcmfsrvl in 079)
+Profile: Seccomp=0 NoNewPrivs=0. uid 0.
 Bins: workspace-server 1.0.85, preview-proxy 0.1.17 (unchanged).
-Listeners: :4242 closed; 0.0.0.0:6014 + 127.0.0.1:6015 by preview-proxy (pid 104, child of workspace pid 82). Baseline 6014→403, 6015→404.
-Finding: host change. grok-files FUSE present on /workspace/artifacts. No Chrome. Process tree: catatonit → workspace-server → preview-proxy. SAFE sysctls applied where writable (user.max_* left INT_MAX). Cluster coingecko 200 unchanged.
+Listeners: :4242 closed; 0.0.0.0:6014 + 127.0.0.1:6015 by preview-proxy (child of workspace). Baseline 6014→403, 6015→404.
+Finding: host change. grok-files FUSE present on /workspace/artifacts. Process tree: catatonit → workspace-server → preview-proxy. SAFE sysctls unwritable (user.max_* already INT_MAX). Cluster probe inconclusive/200-range.
 Next:
 1. On wake with :4242 up, route/method discovery beyond /health only.
 2. Log only further version, listener, or cluster state changes.
