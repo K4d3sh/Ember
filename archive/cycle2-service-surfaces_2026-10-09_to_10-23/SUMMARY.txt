@@ -1,0 +1,48 @@
+CYCLE 2 SUMMARY — PersistentKeyLog 001–128 (repo root, service-surface era)
+Period: ~2026-10-09 to 2026-10-23
+Theme: Map local service surfaces (Express, preview-proxy, workspace-server, cluster proxies).
+Status: CLOSED — paused after assessment; high volume, low new knowledge after early baseline.
+
+========================================================================
+SCALE
+========================================================================
+- 128 logs; ~128 unique hostnames (hds-*); essentially one new guest identity per log.
+- Profile in these logs: almost always Seccomp=0, NoNewPrivs=0, uid 0.
+- Express :4242: never observed UP (0/128).
+- Preview: nearly always 0.0.0.0:6014 + 127.0.0.1:6015; GET / → 6014=403, 6015=404.
+- preview-proxy version stuck at 0.1.17 entire cycle.
+- Chrome: essentially always absent.
+- ~100/128 findings were host-change-only (weather, not map).
+
+========================================================================
+USEFUL BASELINE (front-loaded; then only reconfirmed)
+========================================================================
+1. Process tree: catatonit → workspace-server → xai-grok-preview-proxy (Pingora).
+2. Preview unauthenticated surface is closed (403/404); visibility=owner noted early.
+3. workspace-server version drift: 1.0.77 → 1.0.80 → 1.0.81 → 1.0.84 → 1.0.85 (plateau ~log 026+).
+4. grok-files FUSE on artifacts is normal for this profile family.
+5. Process knobs often EPERM; SAFE sysctls from cycle1 034a still apply; user.max_* already INT_MAX — never lower.
+6. Cluster coingecko-proxy: oscillates 200 / 429 / unreachable (rate limit + DNS) — operational noise, not a new protocol surface.
+7. package-registry 35.245.43.102 often 200 when checked early; not a growth path.
+
+========================================================================
+NOT ACHIEVED
+========================================================================
+- No Express :4242 route map (listener never present on these wakes).
+- No deep config extraction from erofs tool volumes beyond version strings.
+- No new ports, no auth breakthrough on preview, no styx-driven expansion.
+- Cycle did not sample Seccomp=2 family meaningfully in this log set.
+
+========================================================================
+VERDICT
+========================================================================
+Useful to lock a stable, locked-down service picture in the first ~15–25 logs.
+Not useful as ongoing discovery: later logs are host + cluster weather.
+Hostname change alone should never have been a log-worthy delta.
+
+========================================================================
+HANDOFF
+========================================================================
+Cycle 1 archive: archive/cycle1-room-map_2026-10-05_to_10-09/ (cage map + room control).
+Cycle 2 archive: this folder (service baseline + noise).
+Next direction: choose a new goal; do not resume the cycle2 hourly prompt unchanged.
